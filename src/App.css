@@ -1,0 +1,16 @@
+.App {
+  text-align: center;
+}
+
+.pros {
+    border-right: 1px solid blue;
+    padding: 1rem;
+}
+
+.cons {
+    padding: 1rem;
+}
+
+h1 span {
+    padding-right: 1rem;
+}
