@@ -3,7 +3,7 @@
 }
 
 .pros {
-    border-right: 1px solid blue;
+    border-right: 1px solid #000;
     padding: 1rem;
 }
 
@@ -13,4 +13,35 @@
 
 h1 span {
     padding-right: 1rem;
+}
+
+div.right {
+    margin-bottom: 1.5rem;
+    padding-right: 5.5rem;
+    text-align: right;
+}
+
+.btn.btn-circle {
+    border-radius: 15px;
+    font-size: 12px;
+    height: 30px;
+    line-height: 1.42;
+    padding: 6px 8px;
+    text-align: left;
+    width: 30px;
+}
+
+.panel-default > .panel-heading.left {
+    background-color: #fff;
+    background-image: none;
+    text-align: left;
+}
+
+.addItem {
+    margin: 3rem 1rem 1rem;
+    width: 80%;
+}
+
+.glyphicon-plus {
+    margin: 0 1px;
 }
