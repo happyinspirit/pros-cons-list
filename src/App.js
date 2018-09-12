@@ -8,8 +8,8 @@ class App extends Component {
       this.state = {
           isProToggleOn: true,
           isConToggleOn: true,
-          pro: '',
-          con: '',
+          pros: '',
+          cons: '',
           proTextArea: [],
           conTextArea: []
       };
@@ -57,7 +57,7 @@ class App extends Component {
         e.preventDefault();
         var array;
         var index;
-        if (type === "pro") {
+        if (type === "pros") {
             array = [...this.state.proTextArea];
             index = array.indexOf(val)
             array.splice(index, 1);
@@ -68,6 +68,55 @@ class App extends Component {
             array.splice(index, 1);
             this.setState({conTextArea: array});
         }
+    }
+
+    listHeader(typeName, icon) {
+        return (
+            <h1>
+                <span className={icon} aria-hidden="true"></span>
+                {typeName}
+            </h1>
+        )
+    }
+
+    createdPanel(types, typeName, icon) {
+        return (
+            types.map((type, index) =>
+                <div key={index} className="panel panel-default list">
+                    <div className="panel-body">
+                        <span className={icon} aria-hidden="true"></span>
+                        <span className="glyphicon glyphicon-remove" aria-hidden="true" onClick={(e) => this.removeCard(typeName, type, e)}></span>
+                        {type}
+                    </div>
+                </div>
+            )
+        )
+    }
+
+    initialPanel(typeName, buttonStyle, toggle, state, handle) {
+        return (
+            <div className="panel panel-default">
+                <div className="panel-heading left">
+                    <button type="button" className={buttonStyle} onClick={() => this.addCard(typeName)}>
+                        {toggle ?
+                            <span className="glyphicon glyphicon-plus" aria-hidden="true"></span> :
+                            <span className="glyphicon glyphicon-minus" aria-hidden="true"></span>}
+                    </button>
+                    {toggle ? '  Add ' + typeName.charAt(0).toUpperCase() + typeName.slice(1) : 'Close'}
+                </div>
+
+                {!toggle ?
+                <div className="panel-body">
+                    <form onSubmit={(e) => this.saveCard(typeName, e)}>
+                        <textarea type="text" value={state} className="addItem" onChange={handle} name={typeName}></textarea>
+                        <div className="right">
+                            <button type="submit" className="btn btn-primary">Save</button>
+                        </div>
+                    </form>
+                </div> : ''}
+
+            </div>
+        )
     }
 
     render() {
@@ -82,80 +131,18 @@ class App extends Component {
             <div className="App container">
                 <div className="row">
                     <div className="col-md-6 pros">
-                        <h1>
-                            <span className="glyphicon glyphicon-thumbs-up" aria-hidden="true"></span>
-                            Pros
-                        </h1>
+                        {this.listHeader('Pros', 'glyphicon glyphicon-thumbs-up')}
 
-                        {pros.map((pro, index) =>
-                            <div key={index} className="panel panel-default list">
-                                <div className="panel-body">
-                                    <span className="glyphicon glyphicon-thumbs-up" aria-hidden="true"></span>
-                                    <span className="glyphicon glyphicon-remove" aria-hidden="true" onClick={(e) => this.removeCard('pro', pro, e)}></span>
-                                    {pro}
-                                </div>
-                            </div>
-                        )}
+                        {this.createdPanel(pros, 'pros', 'glyphicon glyphicon-thumbs-up')}
 
-                        <div className="panel panel-default">
-                            <div className="panel-heading left">
-                                <button type="button" className={buttonProStyle} onClick={() => this.addCard('pro')}>
-                                    {this.state.isProToggleOn ?
-                                        <span className="glyphicon glyphicon-plus" aria-hidden="true"></span> :
-                                        <span className="glyphicon glyphicon-minus" aria-hidden="true"></span>}
-                                </button>
-                                {this.state.isProToggleOn ? '  Add Pro' : 'Close'}
-                            </div>
-
-                            {!this.state.isProToggleOn ?
-                            <div className="panel-body">
-                                <form onSubmit={(e) => this.saveCard('pro', e)}>
-                                    <textarea type="text" value={this.state.pro} className="addItem" onChange={this.handleProChange} name="pro"></textarea>
-                                    <div className="right">
-                                        <button type="submit" className="btn btn-primary">Save</button>
-                                    </div>
-                                </form>
-                            </div> : ''}
-
-                        </div>
+                        {this.initialPanel('pro', buttonProStyle, this.state.isProToggleOn, this.state.pro, this.handleProChange)}
                     </div>
-                    <div className="col-md-6 cons">
-                        <h1>
-                            <span className="glyphicon glyphicon-thumbs-down" aria-hidden="true"></span>
-                            Cons
-                        </h1>
+                    <div className="col-md-6 pros">
+                        {this.listHeader('Cons', 'glyphicon glyphicon-thumbs-down')}
 
-                        {cons.map((con, index) =>
-                            <div key={index} className="panel panel-default list">
-                                <div className="panel-body">
-                                    <span className="glyphicon glyphicon-thumbs-down" aria-hidden="true"></span>
-                                    <span className="glyphicon glyphicon-remove" aria-hidden="true" onClick={(e) => this.removeCard('con', con, e)}></span>
-                                    {con}
-                                </div>
-                            </div>
-                        )}
+                        {this.createdPanel(cons, 'cons', 'glyphicon glyphicon-thumbs-down')}
 
-                        <div className="panel panel-default">
-                        <div className="panel-heading left">
-                            <button type="button" className={buttonConStyle} onClick={() => this.addCard('con')}>
-                                {this.state.isConToggleOn ?
-                                    <span className="glyphicon glyphicon-plus" aria-hidden="true"></span> :
-                                    <span className="glyphicon glyphicon-minus" aria-hidden="true"></span>}
-                            </button>
-                            {this.state.isConToggleOn ? '  Add Con' : 'Close'}
-                        </div>
-
-                        {!this.state.isConToggleOn ?
-                        <div className="panel-body">
-                            <form onSubmit={(e) => this.saveCard('con', e)}>
-                                <textarea type="text" value={this.state.con} className="addItem" onChange={this.handleConChange} name="con"></textarea>
-                                <div className="right">
-                                    <button type="submit" className="btn btn-primary">Save</button>
-                                </div>
-                            </form>
-                        </div> : ''}
-
-                        </div>
+                        {this.initialPanel('con', buttonConStyle, this.state.isConToggleOn, this.state.con, this.handleConChange)}
                     </div>
                 </div>
             </div>
